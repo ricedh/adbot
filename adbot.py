@@ -29,12 +29,32 @@ ad_url = 'http://texashistory.unt.edu/ark:/' + '/'.join(ad_url_parts[0:4]) + '/z
 # Move ad file to archived "old" directory
 os.rename(new_ads_path + ad_file, old_ads_path + ad_file)
 
-    # Excerpt the largest number of words from the beginning of the
-    # ad that ads up to no more than 117 characters (including spaces
-    # and an \u2026 ellipsis and quotation marks to show that it's an excerpt)
-    # Links will be shortened by Twitter API to 22 characters
+# Excerpt the largest number of words from the beginning of the
+# ad that ads up to no more than 117 characters (including spaces
+# and an \u2026 ellipsis and quotation marks to show that it's an excerpt)
+# Links will be shortened by Twitter API to 22 characters
 
-    # Recompose permalink to PoTH from ad filename, setting zoom to 5
+ad_as_list = ad_text.split()
+
+print ad_as_list
+
+word_count = 1
+excerpt_length = 0
+
+while (excerpt_length) < 111:
+    excerpt = " ".join(ad_as_list[0:word_count])
+    word_count = word_count + 1
+    excerpt_length = len(excerpt)
+
+while excerpt_length > 111:
+    word_count = word_count - 1
+    excerpt = " ".join(ad_as_list[0:word_count])
+    excerpt_length = len(excerpt)
+
+tweet = '"' + excerpt + '..."'
+print tweet
+print len(tweet)
+
 
     # Put together the excerpt and the permalink and assign to `tweet` var
 
