@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
-import os
-import random
+import os, random
 import twitter # https://github.com/bear/python-twitter
 from OAuthSettings import settings
 
@@ -12,9 +11,7 @@ access_token_secret = settings['access_token_secret']
 
 old_ads_path = 'old/'
 new_ads_path = 'new/'
-
-# Code to compose tweet from runaway ads will go here
-# print tweet at end for local testing
+log_file = 'twitter.log'
 
 # Open one of the ad files from an input "new" directory
 new_ads = os.listdir(new_ads_path)
@@ -26,22 +23,15 @@ ad_url_parts = ad_file.split('_')[-1].rstrip('.txt')
 ad_url_parts = ad_url_parts.split('-')
 ad_url = 'http://texashistory.unt.edu/ark:/' + '/'.join(ad_url_parts[0:4]) + '/zoom/?zoom=5&lat=' + ad_url_parts[4] + '&lon=' + ad_url_parts[5]
 
-# Move ad file to archived "old" directory
-os.rename(new_ads_path + ad_file, old_ads_path + ad_file)
-
 # Excerpt the largest number of words from the beginning of the
-# ad that ads up to no more than 117 characters (including spaces
-# and an \u2026 ellipsis and quotation marks to show that it's an excerpt)
+# ad that ads up to no more than 111 characters. 
 # Links will be shortened by Twitter API to 22 characters
 
 ad_as_list = ad_text.split()
-
-print ad_as_list
-
 word_count = 1
 excerpt_length = 0
 
-while (excerpt_length) < 111:
+while excerpt_length < 111:
     excerpt = " ".join(ad_as_list[0:word_count])
     word_count = word_count + 1
     excerpt_length = len(excerpt)
@@ -51,24 +41,22 @@ while excerpt_length > 111:
     excerpt = " ".join(ad_as_list[0:word_count])
     excerpt_length = len(excerpt)
 
-tweet = '"' + excerpt + '..."'
-print tweet
-print len(tweet)
-
-
-    # Put together the excerpt and the permalink and assign to `tweet` var
+tweet = '"' + excerpt + '..." ' + ad_url
 
 # print tweet
+# print len(tweet)
 
-# Try to post tweet variable to Twitter
-# Commented out for local testing without posting
-# try:
-#     api = twitter.Api(consumer_key = api_key,
-#     consumer_secret = api_secret,
-#     access_token_key = access_token,
-#     access_token_secret = access_token_secret)
-# 
-#     status = api.PostUpdate(tweet)
-#     print ' post successful!'
-# except twitter.TwitterError:
-#     print ' error posting!'
+# Try to post tweet to Twitter
+# Comment out for local testing without posting
+
+l = open(log_file, 'a')
+log = [ad_file, tweet]
+try:
+    api = twitter.Api(consumer_key = api_key, consumer_secret = api_secret, access_token_key = access_token, access_token_secret = access_token_secret)
+    status = api.PostUpdate(tweet)
+    l.write('Success\t' + ad_file)
+    # Move ad file to archived "old" directory
+    os.rename(new_ads_path + ad_file, old_ads_path + ad_file)
+except twitter.TwitterError:
+    l.write('Error\t' + ad_file)
+l.close()
