@@ -50,13 +50,11 @@ tweet = '"' + excerpt + '..." ' + ad_url
 # Comment out for local testing without posting
 
 l = open(log_file, 'a')
-log = [ad_file, tweet]
 try:
     api = twitter.Api(consumer_key = api_key, consumer_secret = api_secret, access_token_key = access_token, access_token_secret = access_token_secret)
     status = api.PostUpdate(tweet)
-    l.write('Success\t' + ad_file)
     # Move ad file to archived "old" directory
     os.rename(new_ads_path + ad_file, old_ads_path + ad_file)
 except twitter.TwitterError:
-    l.write('Error\t' + ad_file)
+    l.write('Error\t' + ad_file + '\n')
 l.close()
