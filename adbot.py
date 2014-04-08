@@ -9,8 +9,8 @@ api_secret = settings['api_secret']
 access_token = settings['access_token']
 access_token_secret = settings['access_token_secret']
 
-old_ads_path = 'old/'
-new_ads_path = 'new/'
+old_ads_path = '/Users/wcm1/programming/ricedh/adbot/old/'
+new_ads_path = '/Users/wcm1/programming/ricedh/adbot/new/'
 log_file = 'twitter.log'
 
 # Open one of the ad files from an input "new" directory
