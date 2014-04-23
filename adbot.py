@@ -13,6 +13,9 @@ old_ads_path = '/Users/wcm1/programming/ricedh/adbot/old/'
 new_ads_path = '/Users/wcm1/programming/ricedh/adbot/new/'
 log_file = '/Users/wcm1/programming/ricedh/adbot/twitter.log'
 
+# Sleep for 10 seconds to give time for network connection
+time.sleep(10)
+
 # Open one of the ad files from an input "new" directory
 new_ads = os.listdir(new_ads_path)
 ad_file = random.choice(new_ads)

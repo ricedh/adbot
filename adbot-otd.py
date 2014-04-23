@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import os, random, sys
+import os, random, sys, time
 import twitter # https://github.com/bear/python-twitter
 from datetime import date
 from OAuthSettings import settings
@@ -13,6 +13,9 @@ access_token_secret = settings['access_token_secret']
 old_ads_path = '/Users/wcm1/programming/ricedh/adbot/old/'
 new_ads_path = '/Users/wcm1/programming/ricedh/adbot/new/'
 log_file = '/Users/wcm1/programming/ricedh/adbot/twitter.log'
+
+# Sleep for 10 seconds to give time for network connection
+time.sleep(10)
 
 # Check for ads that have today's date in file name
 ads = os.listdir(new_ads_path) + os.listdir(old_ads_path)
